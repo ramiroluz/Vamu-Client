@@ -15,6 +15,8 @@ vamu_clientdoc_DATA = \
 
 EXTRA_DIST = $(vamu_clientdoc_DATA)
 
+test_PYTHON = \
+	vamu_client_test.py
 
 # Remove doc directory on uninstall
 uninstall-local:
