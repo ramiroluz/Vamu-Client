@@ -29,15 +29,14 @@ class InvalidValueError(Exception):
 
 class Options(dict):
     def __init__(self, *args, **kwargs):
-        self.update(*args, **kwargs)
-    
         self.valid_options = {'canonical': ['0', '1'],
                               'exclusive': ['0', '1'],
                               'confirmation': ['0', '1'],
                               'type': ['plain', 'json', 'xml']}
 
         self.file_options = ['input', 'output', 'bibtex', 'size']
-
+        self.update(*args, **kwargs)
+    
     def __setitem__(self, key, value):
         if key not in self.file_options:
             valid_values = self.valid_options.get(key)
@@ -71,7 +70,7 @@ class VamuClient():
         '''
         self.api_template = 'http://va.mu/api/create?url={0}'
 
-        #TODO handle args
+        #TODO handle *args
         self.options = Options(kwargs)
         if 'size' not in self.options:
             self.options['size'] = 42
@@ -106,18 +105,16 @@ class VamuClient():
     def short_bibtex_file(self, bib_file_name, out_file_name = None):
         try:
             read_file = open(bib_file_name)
-            url_pattern = re.compile('''[\{]http://[^+]*?[\}]''')
             content = read_file.read()
             read_file.close()
-            urls = url_pattern.findall(content)
-            replaces = [x for x in urls if len(x) > self.options.get('size')]
+            urls = self.findall_bibtex_urls(content)
+            replaces = self.handle_bibtex_urls(urls)
             
-            for bib_url in replaces:
-                url = bib_url.replace('\\','')
-                url = url.replace('},\n','')
-                url = url.replace('}\n','')
-                content = content.replace(url, self.short_url(url))
-                print '.',
+            for bib_url, url in replaces:
+                pattern = '{{{0}}}'
+                old = pattern.format(bib_url)
+                new = pattern.format(self.short_url(url))
+                content = content.replace(old, new)
                 
             if out_file_name is None:
                 out_file_name = bib_file_name
@@ -129,7 +126,23 @@ class VamuClient():
             result = 'Couldn\'t short from bibtex file: {0}'
             result = result.format(bib_file_name)
         return result
+
+    def handle_bibtex_urls(self, urls):
+        replaces = [x for x in urls if len(x) > self.options.get('size')]
+        result = []
             
+        for bib_url in replaces:
+            url = bib_url.replace('\\','')
+            result.append((bib_url, url))
+                
+        return result
+    
+    def findall_bibtex_urls(self, content):
+        url_pattern = re.compile('''(?<={)http://[^+]*?(?=})''')
+        urls = url_pattern.findall(content)
+
+        return urls
+    
     def short_from_file(self, in_file_name):
         try:
             in_file = open(out_file_name, 'w')
@@ -155,7 +168,8 @@ class VamuClient():
     def handle_options(self):
         optional_args = []
         for key, value in self.options.iteritems():
-            optional_args.append('{0}={1}'.format(key,value))
+            if key in self.options.valid_options:
+                optional_args.append('{0}={1}'.format(key,value))
         if optional_args:
             self.api = '{0}&{1}'.format(self.api_template,
                                         '&'.join(optional_args))
@@ -240,7 +254,7 @@ def main():
 
     if url or options.get('input') or options.get('bibtex'):
         vamu = VamuClient()
-        vamu.options = options
+        vamu.options = Options(options)
         vamu.set_url(url)
         print( vamu.run() )
     else:
