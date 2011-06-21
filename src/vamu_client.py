@@ -78,7 +78,15 @@ class VamuClient():
         self.shorted = []
         self.handle_options()
 
+    def as_text(self):
+        row_template = '{0[0]} - {0[1]}'
+        result = []
+        for row in self.shorted:
+            result.append(row_template.format(row))
+        return '\n'.join(result)
+
     def set_url(self, url):
+        self.url = url
         self.handle_options()
         self.resource = self.api.format(urllib2.quote(url))
         return self.resource
@@ -93,13 +101,13 @@ class VamuClient():
             if in_file_name:
                 self.short_from_file(in_file_name)
             else:
-                self.short_list([self.options.get('url')])
+                self.short_list([self.url])
 
             if out_file_name:
                 result = self.write(out_file_name)
             else:
-                result = '\n'.join(self.shorted)
-                
+                result = self.as_text()
+
         return result
 
     def short_bibtex_file(self, bib_file_name, out_file_name = None):
@@ -157,8 +165,7 @@ class VamuClient():
     def write(self, out_file_name):
         try:
             out_file = open(out_file_name, 'w')
-            for row in self.sorted:
-                out_file.write('{0[0]} - {0[1]}\n'.format(row))
+            out_file.write(self.as_text())
             out_file.close()
             result = 'Output file generated: {0}'.format(out_file_name)
         except:
