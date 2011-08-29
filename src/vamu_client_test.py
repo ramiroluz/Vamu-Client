@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding=utf-8 -*-
 # vamu_client_test.py
 #
 # Copyright (C) 2011 - Ramiro Batista da Luz
@@ -29,6 +31,33 @@ class VamuClientTest(unittest.TestCase):
   url            = {http://cppunit.sourceforge.net/doc/lastest/cppunit_cookbook.html}
 }
 
+@Article{dyba,
+  Author         = "Tore Dybå and Torgeir Dingsøyr",
+  Title          = "Empirical studies of agile software development: A
+                   systematic review",
+  Journal        = "Information and Software Technology",
+  Volume         = "50",
+  Number         = "9-10",
+  Pages          = "833 - 859",
+  doi            = "DOI: 10.1016/j.infsof.2008.01.006",
+  issn           = "0950-5849",
+  keywords       = "Scrum",
+  url            = "{http://www.sciencedirect.com/science/article/B6V0B-4RRFN8D-1/2/e209a925b491379481755341b2ebb91c}",
+  year           = 2008
+}
+
+@Misc{DJUT1,
+  Author         = {{Adolfo Neto}},
+  Title          = {Dojo-{UTFPR} - {G}it{H}ub},
+  HowPublished   = {https://github.com/adolfont/Dojo-UTFPR/tree/master/experimental/20110223},
+  Note           = {Dispon\'{i}vel em:
+                   \url{https://github.com/adolfont/Dojo-UTFPR/tree/master/experimental/20110223}.
+                   Acessado em: 18 de abril de 2011.},
+  acessado       = {14 de abril de 2011},
+  url            = {https://github.com/adolfont/Dojo-UTFPR/tree/master/experimental/20110223},
+  year           = 2011
+}
+
 @Misc{MichaelFeathers:03,
   Author         = {Feathers, Michael},
   Title          = {Source{F}orge.net: cppunit what is},
@@ -36,10 +65,20 @@ class VamuClientTest(unittest.TestCase):
   Note           = {[Online; accessed 13-June-2011]},
   url            = {http://sourceforge.net/apps/mediawiki/cppunit/index.php?title=Main_Page&oldid=50#What_is_CppUnit.3F}
 }'''
+
         self.bibtex_urls = ['http://cppunit.sourceforge.net/'
                             'doc/lastest/cppunit\\_cookbook.html',
                             'http://cppunit.sourceforge.net/'
                             'doc/lastest/cppunit_cookbook.html',
+                            'http://www.sciencedirect.com/science/'
+                            'article/B6V0B-4RRFN8D-1/2/e209a925b49'
+                            '1379481755341b2ebb91c',
+                            'https://github.com/adolfont/Dojo-UTFPR/'
+                            'tree/master/experimental/20110223',
+                            'https://github.com/adolfont/Dojo-UTFPR/'
+                            'tree/master/experimental/20110223',
+                            'https://github.com/adolfont/Dojo-UTFPR/'
+                            'tree/master/experimental/20110223',
                             'http://sourceforge.net/apps/mediawiki/'
                             'cppunit/index.php?title=Main\_Page\&'
                             'oldid=50\#What\_is\_CppUnit.3F',
@@ -121,22 +160,40 @@ class VamuClientTest(unittest.TestCase):
                                      'doc/lastest/cppunit\\_cookbook.html',
                                      'http://cppunit.sourceforge.net/'
                                      'doc/lastest/cppunit_cookbook.html'),
-                                     ('http://cppunit.sourceforge.net/'
-                                      'doc/lastest/cppunit_cookbook.html',
-                                      'http://cppunit.sourceforge.net/'
-                                      'doc/lastest/cppunit_cookbook.html'),
-                                      ('http://sourceforge.net/apps/mediawiki/'
-                                       'cppunit/index.php?title=Main\_Page\&'
-                                       'oldid=50\#What\_is\_CppUnit.3F',
-                                       'http://sourceforge.net/apps/mediawiki/'
-                                       'cppunit/index.php?title=Main_Page&'
-                                       'oldid=50#What_is_CppUnit.3F'),
-                                      ('http://sourceforge.net/apps/mediawiki/'
-                                       'cppunit/index.php?title=Main_Page&'
-                                       'oldid=50#What_is_CppUnit.3F',
-                                       'http://sourceforge.net/apps/mediawiki/'
-                                       'cppunit/index.php?title=Main_Page&'
-                                       'oldid=50#What_is_CppUnit.3F')])
+                                    ('http://cppunit.sourceforge.net/'
+                                     'doc/lastest/cppunit_cookbook.html',
+                                     'http://cppunit.sourceforge.net/'
+                                     'doc/lastest/cppunit_cookbook.html'),
+                                    ('http://www.sciencedirect.com/science/'
+                                     'article/B6V0B-4RRFN8D-1/2/e209a925b49'
+                                     '1379481755341b2ebb91c',
+                                     'http://www.sciencedirect.com/science/'
+                                     'article/B6V0B-4RRFN8D-1/2/e209a925b49'
+                                     '1379481755341b2ebb91c'),
+                                    ('https://github.com/adolfont/Dojo-UTFPR/'
+                                     'tree/master/experimental/20110223',
+                                     'https://github.com/adolfont/Dojo-UTFPR/'
+                                     'tree/master/experimental/20110223'),
+                                    ('https://github.com/adolfont/Dojo-UTFPR/'
+                                     'tree/master/experimental/20110223',
+                                     'https://github.com/adolfont/Dojo-UTFPR/'
+                                     'tree/master/experimental/20110223'),
+                                    ('https://github.com/adolfont/Dojo-UTFPR/'
+                                     'tree/master/experimental/20110223',
+                                     'https://github.com/adolfont/Dojo-UTFPR/'
+                                     'tree/master/experimental/20110223'),
+                                    ('http://sourceforge.net/apps/mediawiki/'
+                                     'cppunit/index.php?title=Main\_Page\&'
+                                     'oldid=50\#What\_is\_CppUnit.3F',
+                                     'http://sourceforge.net/apps/mediawiki/'
+                                     'cppunit/index.php?title=Main_Page&'
+                                     'oldid=50#What_is_CppUnit.3F'),
+                                    ('http://sourceforge.net/apps/mediawiki/'
+                                     'cppunit/index.php?title=Main_Page&'
+                                     'oldid=50#What_is_CppUnit.3F',
+                                     'http://sourceforge.net/apps/mediawiki/'
+                                     'cppunit/index.php?title=Main_Page&'
+                                     'oldid=50#What_is_CppUnit.3F')])
                                 
     def test_set_invalid_type(self):
         self.assertRaises(InvalidValueError, 

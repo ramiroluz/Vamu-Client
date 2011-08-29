@@ -1,18 +1,19 @@
 #!/usr/bin/env python
+# -*- coding=utf-8 -*-
 #
 # main.py
 # Copyright (C) Ramiro Batista da Luz 2011 <ramiroluz@gmail.com>
-# 
+#
 # vamu-client is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
 # Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # vamu-client is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -36,7 +37,7 @@ class Options(dict):
 
         self.file_options = ['input', 'output', 'bibtex', 'size']
         self.update(*args, **kwargs)
-    
+
     def __setitem__(self, key, value):
         if key not in self.file_options:
             valid_values = self.valid_options.get(key)
@@ -44,13 +45,13 @@ class Options(dict):
                 raise InvalidOptionError
             if value not in valid_values:
                 raise InvalidValueError
-        
+
         dict.__setitem__(self, key, value)
 
     def update(self, *args, **kwargs):
         for k, v in dict(*args, **kwargs).iteritems():
             self[k] = v
-            
+
 class VamuClient():
     def __init__(self, *args, **kwargs):
         '''Accept the following options, from http://va.mu/api/doc
@@ -64,9 +65,9 @@ class VamuClient():
         -i --input          Input file with URLs to short.
         -o --output         Output file to store shorted URLs
                             DANGER (file will be overrided).
-                            
+
         -b --bibtex         Bibtex file to convert references.
-        -s --size           Minimum URL length to convert. (default:42).           
+        -s --size           Minimum URL length to convert. (default:42).
         '''
         self.api_template = 'http://va.mu/api/create?url={0}'
 
@@ -117,13 +118,13 @@ class VamuClient():
             read_file.close()
             urls = self.findall_bibtex_urls(content)
             replaces = self.handle_bibtex_urls(urls)
-            
+
             for bib_url, url in replaces:
                 pattern = '{{{0}}}'
                 old = pattern.format(bib_url)
                 new = pattern.format(self.short_url(url))
                 content = content.replace(old, new)
-                
+
             if out_file_name is None:
                 out_file_name = bib_file_name
             write_file = open(out_file_name,'w')
@@ -138,19 +139,19 @@ class VamuClient():
     def handle_bibtex_urls(self, urls):
         replaces = [x for x in urls if len(x) > self.options.get('size')]
         result = []
-            
+
         for bib_url in replaces:
             url = bib_url.replace('\\','')
             result.append((bib_url, url))
-                
+
         return result
-    
+
     def findall_bibtex_urls(self, content):
-        url_pattern = re.compile('''(?<={)http://[^+]*?(?=})''')
+        url_pattern = re.compile('''(?<={)http[s]?://[^+]*?(?=})''')
         urls = url_pattern.findall(content)
 
         return urls
-    
+
     def short_from_file(self, in_file_name):
         try:
             in_file = open(out_file_name, 'w')
@@ -160,8 +161,7 @@ class VamuClient():
         except:
             result = 'Couldn\'t short from file: {0}'.format(in_file_name)
         return result
-            
-            
+
     def write(self, out_file_name):
         try:
             out_file = open(out_file_name, 'w')
@@ -182,7 +182,7 @@ class VamuClient():
                                         '&'.join(optional_args))
         else:
             self.api = self.api_template
-            
+
     def short_list(self, urls):
         self.shorted = []
         for url in urls:
@@ -218,7 +218,6 @@ or
     More information: http://va.mu/api/doc
     '''.format(sys.argv[0]))
 
-    
 def main():
     try:
         opts, args = getopt.getopt(sys.argv[1:], "hc:e:C:t:u:i:o:b:s:", 
